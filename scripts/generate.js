@@ -1,12 +1,33 @@
 const fs=require('fs'),path=require('path'),today=new Date().toISOString().slice(0,10),slug=today;
-const feed=JSON.parse(fs.readFileSync(path.join(__dirname,'..','feed.json'),'utf8'));
-if(feed.posts.find(p=>p.slug===slug)){console.log('Exists');process.exit(0)}
-const pool=[[["新手健身入门：第一个月怎么练","每周3-4次全身训练、每次45-60分钟、从固定器械开始学动作、不要急着上大重量。","新手入门"],["腹肌训练全攻略：不只是卷腹","上腹下腹侧腹都要练。平板支撑+卷腹+举腿+俄罗斯转体组合。体脂15%以下腹肌才明显。","腹肌训练"],["蛋白质每天吃多少？增肌减脂的蛋白质摄入计算","增肌期每公斤体重1.6-2.2g蛋白质、减脂期1.8-2.4g。分3-5餐摄入吸收更好。","营养知识"]],[["俯卧撑从零到100的进阶训练计划","先练跪姿俯卧撑→标准俯卧撑→宽距→窄距→钻石。每次力竭为止，组间休息90秒。","力量训练"],["减脂期怎么吃：不用饿肚子也能瘦","制造300-500卡热量缺口、高蛋白保持饱腹感、粗粮代替精制碳水、每周一次欺骗餐。","减脂知识"],["深蹲的正确姿势：膝盖要不要过脚尖","背挺直核心收紧、臀部先动不是膝盖先动、蹲到大腿平行地面。膝盖可以过脚尖看个人身体结构。","动作教学"]],[["哑铃训练全攻略：在家就能练全身","哑铃卧推练胸、哑铃划船练背、哑铃推举练肩、哑铃弯举练手臂、哑铃深蹲练腿。","力量训练"],["增肌期怎么吃怎么练：3个月长10斤计划","每天热量盈余300-500卡。训练以大重量低次数为主（每组6-10次）。保证7-8小时睡眠。","增肌知识"],["瑜伽入门：10个适合新手的体式","山式、下犬式、猫牛式、战士一二式、树式、婴儿式、桥式、仰卧扭转、摊尸式。","瑜伽拉伸"]],[["HIIT训练20分钟比跑步1小时更燃脂","高强度间歇训练=30秒全力+30秒休息循环。每周2-3次足够。膝盖不好选低冲击HIIT。","减脂训练"],["硬拉的正确姿势：最容易被做错的动作","杠铃贴着小腿往上拉、背挺直核心收紧、臀部发力顶出去、不要用腰拉。从轻重量开始练动作。","动作教学"],["拉伸的重要性：健身前后都要拉伸","训练前动态拉伸激活肌肉、训练后静态拉伸放松肌肉。每个动作保持15-30秒不要弹震。","瑜伽拉伸"]],[["健身补剂哪些值得买哪些是智商税","蛋白粉和肌酸是唯一被大量研究证实的有效补剂。BCAA基本没用，氮泵有刺激但非必需。","营养知识"],["背肌训练：引体向上和划船的黄金组合","引体向上是练背最有效的动作、做不到可以做负重下拉。划船注意肩胛骨收缩夹紧背部。","力量训练"],["跑步的正确姿势：不伤膝盖跑得更远","步频保持170-180步/分钟、前脚掌或全脚掌着地不要后跟着地、身体微微前倾、手臂前后摆动不过中线。","有氧运动"]],[["肌肉酸痛怎么缓解：运动后恢复指南","延迟性肌肉酸痛48-72小时最明显。轻度有氧+拉伸+按摩+泡沫轴放松。冰敷急性损伤热敷慢性酸痛。","恢复知识"],["健身多久能看到效果：不同阶段的变化","第一个月力量涨最快、第二个月线条开始变明显、第三个月身材变化最明显。拍照记录比称体重更准。","新手入门"],["女性健身和男性有什么不同","女生不用怕练壮太难了（睾酮是男的1/10）。同样训练方式和动作、侧重下半身和核心居多。","女性健身"]],[["健身房办卡前问清楚这5个问题","高峰期几点到几点、私教课能不能不买、合同期内能不能转让或暂停、器械哪些是免费的。","实用攻略"],["卧推的正确姿势和常见错误","脚踩实地肩胛骨收紧、下放到胸部轻触再推起来、手腕不要后翻要直腕。新手从空杆开始练。","动作教学"],["腹肌不对称怎么办？天生的没法改变","腹肌形状和排列由基因决定。加强训练能让腹肌更明显但改不了块数。不对称完全正常不用纠结。","腹肌训练"]],[["健身计划怎么安排：推拉腿三分化","周一推（胸+肩+三头）、周三拉（背+二头）、周五腿+核心。每周练两次效果最好但一次也有效。","训练计划"],["平台期怎么突破：换训练方式和调整饮食","改变训练重量或次数范围、换不同的动作、增加训练量、调整碳水循环、保证睡眠质量。","减脂增肌"],["什么时间健身最好：早上还是晚上","下午4-6点体温最高力量最大。但最好的时间是你能坚持的时间。空腹有氧减脂效果好但要小心低血糖。","训练知识"]]];
-const idx=(new Date().getDate()-1)%pool.length,items=pool[idx];
-const postTitle=items[0][2]+' | '+today;
-feed.posts.unshift({slug,date:today,title:postTitle,items:items.map(i=>({title:i[0],desc:i[1],tag:i[2]}))});
+const fp=path.join(__dirname,'..','feed.json');
+const feed=JSON.parse(fs.readFileSync(fp,'utf8'));
+if(!feed.posts)feed.posts=[];
+if(feed.posts.find(p=>p.slug===slug)){console.log('Already exists');process.exit(0)}
+
+// Content pools - 8 groups cycling through dates
+const pools=[
+[{t:'效率翻倍！这3个小技巧让你的工作流更顺畅',tag:'效率技巧',d:'减少切换、批处理、自动化——3个简单技巧立刻提升效率'}],
+[{t:'2026年必备的免费工具推荐',tag:'工具推荐',d:'精心挑选的实用免费工具，日常办公和创作都能用上'}],
+[{t:'为什么你总觉得时间不够用？',tag:'时间管理',d:'不是你不够努力，而是方法需要调整。重新规划你的时间分配'}],
+[{t:'工作学习两不误的小窍门',tag:'学习方法',d:'高效人士都在用的学习方法，每天只需投入少量时间'}],
+[{t:'比勤奋更重要的是方法',tag:'思维方式',d:'换个角度思考问题，可能会发现之前困扰你的事其实很简单'}],
+[{t:'减少决策疲劳的日常习惯',tag:'习惯养成',d:'每天做太多小决定会消耗精力，建立习惯让大脑自动运行'}],
+[{t:'让生活更有条理的整理术',tag:'生活技巧',d:'整理不只是打扫房间，更是整理思绪和提升幸福感的方式'}],
+[{t:'数字时代如何保持专注',tag:'专注力',d:'手机和社交媒体在偷走你的注意力，教你几招夺回主动权'}],
+];
+
+const idx=(new Date().getDate()-1)%pools.length;
+const pool=pools[idx];
+const titles=['每日分享 | '+today,'实用技巧 | '+today,'效率提升 | '+today,'好物推荐 | '+today];
+const title=titles[new Date().getDate()%titles.length];
+
+feed.posts.unshift({slug,date:today,title:title,items:pool});
 feed.updated=today;
-fs.writeFileSync(path.join(__dirname,'..','feed.json'),JSON.stringify(feed,null,2));
-const html='<!DOCTYPE html><html lang="zh-CN"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0"><title>'+postTitle+'</title><style>*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}:root{--bg:#fafafa;--card:#fff;--text:#1a1a2e;--t2:#666;--accent:#dc2626;--border:#e5e7eb;--r:10px}body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","Noto Sans SC",sans-serif;background:var(--bg);color:var(--text);line-height:1.7}.container{max-width:800px;margin:0 auto;padding:0 20px}header{background:var(--card);border-bottom:1px solid var(--border);padding:20px 0;margin-bottom:32px}header a{color:var(--accent);text-decoration:none;font-size:.9rem}header h1{font-size:1.3rem;margin-top:8px}.post{background:var(--card);border:1px solid var(--border);border-radius:var(--r);padding:28px}.post .date{color:var(--t2);font-size:.8rem;margin-bottom:20px}.entry{margin-bottom:24px;padding-bottom:20px;border-bottom:1px solid var(--border)}.entry:last-child{border-bottom:none}.entry h3{font-size:1rem;margin-bottom:4px}.entry p{color:var(--t2);font-size:.9rem}.tag{display:inline-block;font-size:.72rem;padding:2px 8px;border-radius:10px;margin-left:6px;background:var(--bg);color:var(--accent)}footer{text-align:center;padding:32px 20px;color:var(--t2);font-size:.8rem}@media(max-width:600px){.post{padding:18px}}</style></head><body><header><div class="container"><a href="../index.html">← 首页</a><h1>'+postTitle+'</h1></div></header><main class="container"><article class="post"><div class="date">📅 '+today+'</div>'+items.map(i=>'<div class="entry"><h3>'+i[0]+' <span class="tag">'+i[2]+'</span></h3><p>'+i[1]+'</p></div>').join('')+'</article></main><footer><p>每日更新</p></footer></body></html>';
-fs.writeFileSync(path.join(__dirname,'..','posts',slug+'.html'),html);
-console.log('OK');
+fs.writeFileSync(fp,JSON.stringify(feed,null,2));
+
+// Create post HTML
+const dir=path.join(__dirname,'..','posts');
+if(!fs.existsSync(dir))fs.mkdirSync(dir,{recursive:true});
+const h=`<!DOCTYPE html><html lang="zh-CN"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0"><title>${title}</title><meta name="description" content="${pool.map(i=>i.t).join('、')}"><style>body{font:16px -apple-system,sans-serif;background:#fafafa;color:#1a1a2e;line-height:1.8;margin:0;padding:16px}.c{max-width:700px;margin:0 auto}article{background:#fff;padding:24px;border-radius:12px;box-shadow:0 1px 3px rgba(0,0,0,.05)}h1{font-size:1.3rem;margin:0 0 4px}.date{font-size:.8rem;color:#666;margin-bottom:20px}.item{margin-bottom:18px;padding-bottom:14px;border-bottom:1px solid #eee}.item h2{font-size:1rem;margin:0 0 4px}.item p{font-size:.88rem;color:#555}.tag{display:inline-block;background:#eff6ff;color:#2563eb;font-size:.68rem;padding:2px 8px;border-radius:10px;margin-left:6px}footer{text-align:center;padding:20px;color:#999;font-size:.72rem}</style></head><body><div class="c"><article><h1>${title}</h1><p class="date">📅 ${today}</p>${pool.map(i=>'<div class="item"><h2>'+i.t+' <span class="tag">'+i.tag+'</span></h2><p>'+i.d+'</p></div>').join('')}</article></div><footer>每日自动更新</footer></body></html>`;
+fs.writeFileSync(path.join(dir,slug+'.html'),h);
+console.log('Generated:',title);
